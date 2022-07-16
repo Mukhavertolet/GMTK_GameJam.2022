@@ -16,7 +16,9 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 playerCoords;
 
 
-    public ValueChecker valueChecker;
+    //public ValueChecker valueChecker;
+
+    public int lastValue;
 
     public int stepsLeft = 1;
     public bool playersTurn = true;
@@ -42,9 +44,10 @@ public class PlayerMovement : MonoBehaviour
         if (stepsLeft < 1)
             playersTurn = false;
 
-        if (!playersTurn && !enemysTurn)
+        if (!playersTurn)
         {
-            StartCoroutine(EnemyTurn());
+            if (!enemysTurn)
+                StartCoroutine(EnemyTurn());
             return;
         }
 
@@ -65,6 +68,10 @@ public class PlayerMovement : MonoBehaviour
             StartCoroutine(RotateCube(Vector3.back));
         }
 
+        //if (Input.GetKeyDown(KeyCode.H))
+        //{
+        //    CastRayValueCheck();
+        //}
 
     }
 
@@ -128,15 +135,23 @@ public class PlayerMovement : MonoBehaviour
 
         }
 
-        if(!hitWall)
+        if (!hitWall)
             stepsLeft -= 1;
 
         hitWall = false;
 
 
         //yield return null;
-        //valueChecker.transform.position = new Vector3(playerCoords.x, 1.5f, playerCoords.y); yield return null;
-        //Debug.Log(valueChecker.lastValue); yield return null;
+        yield return new WaitForEndOfFrame();
+
+
+        CastRayValueCheck();
+        Debug.Log(lastValue);
+
+
+        yield return new WaitForEndOfFrame();
+
+
         //valueChecker.transform.position = new Vector3(playerCoords.x, 10, playerCoords.y);
 
         isMoving = false;
@@ -176,6 +191,27 @@ public class PlayerMovement : MonoBehaviour
 
 
     }
+
+    public void CastRayValueCheck()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, Vector3.up, out hit, 15f, ~9))
+        {
+            Debug.DrawRay(transform.position, Vector3.up * 100, Color.yellow);
+
+            lastValue = hit.collider.gameObject.GetComponent<QuadValue>().quadValue;
+
+            Debug.Log("hit");
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.up * 100, Color.green);
+        }
+    }
+
+
+
 
 
 
