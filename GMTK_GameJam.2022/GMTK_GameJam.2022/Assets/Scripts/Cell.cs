@@ -31,4 +31,12 @@ public class Cell : MonoBehaviour
     {
 
     }
+
+    public Vector2 GetCoords()
+    {
+        return coords;
+    }
+
+
+
 }
