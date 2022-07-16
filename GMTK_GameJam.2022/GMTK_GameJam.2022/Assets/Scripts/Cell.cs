@@ -15,8 +15,6 @@ public class Cell : MonoBehaviour
     private void Awake()
     {
         cell = gameObject;
-
-        
     }
 
 
@@ -26,11 +24,6 @@ public class Cell : MonoBehaviour
         coords = new Vector2(cell.transform.position.x, cell.transform.position.z);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 
     public Vector2 GetCoords()
     {

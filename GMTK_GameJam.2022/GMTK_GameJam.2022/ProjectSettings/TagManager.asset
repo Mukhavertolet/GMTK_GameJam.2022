@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Cell
   - Wall
+  - CubeFace
+  - ValueChecker
   layers:
   - Default
   - TransparentFX
