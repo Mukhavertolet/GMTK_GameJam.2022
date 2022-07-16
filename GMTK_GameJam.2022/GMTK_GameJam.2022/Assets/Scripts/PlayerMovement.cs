@@ -9,15 +9,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private bool isMoving = false;
 
+    private bool hitWall = false;
+
+
     [SerializeField]
     private Vector2 playerCoords;
 
-    
+
 
     // Start is called before the first frame update
     void Start()
     {
-          
+
     }
 
     // Update is called once per frame
@@ -26,13 +29,13 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
             return;
 
-        if(Input.GetKeyDown(KeyCode.D) && playerCoords.x != 6)
+        if (Input.GetKeyDown(KeyCode.D) && playerCoords.x != 6)
             StartCoroutine(RotateCube(Vector3.right));
-        if (Input.GetKeyDown(KeyCode.A) && playerCoords.x != 0)
+        else if (Input.GetKeyDown(KeyCode.A) && playerCoords.x != 0)
             StartCoroutine(RotateCube(Vector3.left));
-        if (Input.GetKeyDown(KeyCode.W) && playerCoords.y != 6)
+        else if (Input.GetKeyDown(KeyCode.W) && playerCoords.y != 6)
             StartCoroutine(RotateCube(Vector3.forward));
-        if (Input.GetKeyDown(KeyCode.S) && playerCoords.y != 0)
+        else if (Input.GetKeyDown(KeyCode.S) && playerCoords.y != 0)
             StartCoroutine(RotateCube(Vector3.back));
 
 
@@ -47,13 +50,52 @@ public class PlayerMovement : MonoBehaviour
         Vector3 rotationCenter = transform.position + direction / 2 + Vector3.down / 2;
         Vector3 rotationAxis = Vector3.Cross(Vector3.up, direction);
 
-        while(remainingAngle > 0)
+        while (remainingAngle > 0)
         {
+            if (hitWall)
+            {
+                //hitWall = false;
+                break;
+            }
+            Debug.Log("yes");
+
+
             float rotationAngle = Mathf.Min(Time.deltaTime * speed, remainingAngle);
             transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
             remainingAngle -= rotationAngle;
             yield return null;
         }
+
+        if (hitWall)
+        {
+            rotationAxis = Vector3.Cross(Vector3.up, -direction);
+
+            while (remainingAngle < 90)
+            {
+                Debug.Log("no");
+
+                float rotationAngle = Mathf.Min(Time.deltaTime * speed, remainingAngle);
+                transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
+                remainingAngle += rotationAngle;
+                yield return null;
+            }
+
+            var rot = transform.eulerAngles;
+            rot.x = Mathf.Round(rot.x / 90) * 90;
+            rot.y = Mathf.Round(rot.y / 90) * 90;
+            rot.z = Mathf.Round(rot.z / 90) * 90;
+            transform.eulerAngles = rot;
+
+            var pos = transform.position;
+            pos.x = Mathf.Round(pos.x / 1) * 1;
+            pos.y = Mathf.Round(pos.y / 1) * 1;
+            pos.z = Mathf.Round(pos.z / 1) * 1;
+            transform.position = pos;
+
+
+        }
+
+        hitWall = false;
 
         isMoving = false;
 
@@ -61,9 +103,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        playerCoords = other.gameObject.GetComponent<Cell>().GetCoords();
-        Debug.Log("Touch!");
-        Debug.Log(playerCoords);
+        if (other.gameObject.CompareTag("Cell"))
+        {
+            playerCoords = other.gameObject.GetComponent<Cell>().GetCoords();
+            Debug.Log("Touch!");
+            Debug.Log(playerCoords);
+        }
+        else if (other.gameObject.CompareTag("Wall"))
+        {
+            Debug.Log("BAM");
+            hitWall = true;
+        }
+
+
+
     }
 
 
