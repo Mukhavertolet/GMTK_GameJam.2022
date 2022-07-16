@@ -1,9 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public TMP_Text numberOfStepsLeft;
+
+
+
+
+
     public int speed = 300;
 
     [SerializeField]
@@ -38,16 +45,23 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //number of steps text
+        numberOfStepsLeft.text = stepsLeft.ToString();
+
+
         if (isMoving)
             return;
 
         if (stepsLeft < 1)
+        {
             playersTurn = false;
-
+        }
         if (!playersTurn)
         {
             if (!enemysTurn)
+            {
                 StartCoroutine(EnemyTurn());
+            }
             return;
         }
 
@@ -146,7 +160,7 @@ public class PlayerMovement : MonoBehaviour
 
 
         CastRayValueCheck();
-        Debug.Log(lastValue);
+        //Debug.Log(lastValue);
 
 
         yield return new WaitForEndOfFrame();
@@ -169,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
         playersTurn = true;
         enemysTurn = false;
 
-        stepsLeft = 1;
+        stepsLeft = lastValue;
 
         Debug.Log("Player's turn!");
     }
@@ -202,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
 
             lastValue = hit.collider.gameObject.GetComponent<QuadValue>().quadValue;
 
-            Debug.Log("hit");
+            //Debug.Log("hit");
         }
         else
         {
