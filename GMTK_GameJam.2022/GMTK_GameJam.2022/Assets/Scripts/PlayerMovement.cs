@@ -29,13 +29,13 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
             return;
 
-        if (Input.GetKeyDown(KeyCode.D) && playerCoords.x != 6)
+        if (Input.GetKeyDown(KeyCode.D))
             StartCoroutine(RotateCube(Vector3.right));
-        else if (Input.GetKeyDown(KeyCode.A) && playerCoords.x != 0)
+        else if (Input.GetKeyDown(KeyCode.A))
             StartCoroutine(RotateCube(Vector3.left));
-        else if (Input.GetKeyDown(KeyCode.W) && playerCoords.y != 6)
+        else if (Input.GetKeyDown(KeyCode.W))
             StartCoroutine(RotateCube(Vector3.forward));
-        else if (Input.GetKeyDown(KeyCode.S) && playerCoords.y != 0)
+        else if (Input.GetKeyDown(KeyCode.S))
             StartCoroutine(RotateCube(Vector3.back));
 
 
