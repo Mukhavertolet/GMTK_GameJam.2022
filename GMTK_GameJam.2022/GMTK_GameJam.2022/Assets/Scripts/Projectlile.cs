@@ -39,20 +39,7 @@ public class Projectlile : MonoBehaviour
 
             transform.position = pos;
 
-
-            //elapsedTime += Time.deltaTime;
-            //float percentageComplete = elapsedTime / duration;
-
-            //transform.position.Set(transform.position.x, transform.position.y + curve.Evaluate(percentageComplete), transform.position.z);
-
-
-            //transform.position = Vector3.Lerp(startPos, endPos, percentageComplete);
         }
-
-
-        //transform.position += new Vector3(Mathf.Lerp(startPos.x, endPos.x, speed * Time.deltaTime), Mathf.Lerp(transform.position.y, parabolaHeight, speed * Time.deltaTime), Mathf.Lerp(startPos.z, endPos.z, speed * Time.deltaTime));
-
-        //transform.position += Vector3.SmoothDamp(transform.position, endPos, ref )
 
     }
 
