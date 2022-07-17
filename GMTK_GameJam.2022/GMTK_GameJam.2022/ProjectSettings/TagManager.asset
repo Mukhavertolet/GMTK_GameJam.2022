@@ -10,6 +10,7 @@ TagManager:
   - ValueChecker
   - Bullet
   - PlayerLayerMask
+  - AudioManager
   layers:
   - Default
   - TransparentFX

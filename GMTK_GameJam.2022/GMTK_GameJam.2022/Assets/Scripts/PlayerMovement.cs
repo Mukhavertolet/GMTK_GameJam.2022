@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public AudioManager audioManager;
+
+    public GameObject youLost;
+
+
+
     public TMP_Text numberOfStepsLeft;
     public TMP_Text leftHP;
 
@@ -55,6 +61,11 @@ public class PlayerMovement : MonoBehaviour
     public GameObject hitParticles;
 
 
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -76,7 +87,11 @@ public class PlayerMovement : MonoBehaviour
         //}
 
         if (currentHP <= 0)
+        {
+            audioManager.Play("Death");
+            youLost.SetActive(true);
             Destroy(gameObject);
+        }
 
         //number of steps text
         numberOfStepsLeft.text = stepsLeft.ToString();
@@ -102,25 +117,25 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             gun.transform.eulerAngles = new Vector3(0, 90, 0);
 
             StartCoroutine(RotateCube(Vector3.right));
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
         {
             gun.transform.eulerAngles = new Vector3(0, -90, 0);
 
             StartCoroutine(RotateCube(Vector3.left));
         }
-        else if (Input.GetKeyDown(KeyCode.W))
+        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
         {
             gun.transform.eulerAngles = new Vector3(0, 0, 0);
 
             StartCoroutine(RotateCube(Vector3.forward));
         }
-        else if (Input.GetKeyDown(KeyCode.S))
+        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
         {
             gun.transform.eulerAngles = new Vector3(0, 180, 0);
 
@@ -209,6 +224,8 @@ public class PlayerMovement : MonoBehaviour
 
         gun.transform.position = new Vector3(playerCoords.x, 1.01f, playerCoords.y);
 
+        audioManager.Play("CubeRoll");
+
         isMoving = false;
 
     }
@@ -254,6 +271,7 @@ public class PlayerMovement : MonoBehaviour
         else if (other.gameObject.CompareTag("Bullet"))
         {
             Instantiate(hitParticles, transform.position, Quaternion.identity);
+            audioManager.Play("BulletHit");
             currentHP -= 1;
         }
 
@@ -286,6 +304,9 @@ public class PlayerMovement : MonoBehaviour
 
 
         GameObject projectileInstance = Instantiate(projectile, gunStartPos.transform.position, new Quaternion(0, 0, 0, 0));
+
+        audioManager.Play("BulletShoot");
+
 
         gunEndPos.transform.localPosition = new Vector3(0, 0, lastValue);
 

@@ -7,9 +7,11 @@ using TMPro;
 public class OpponentMovement : MonoBehaviour
 {
 
+    public AudioManager audioManager;
+
     public TMP_Text leftHP;
 
-
+    public GameObject youWin;
 
 
 
@@ -64,6 +66,11 @@ public class OpponentMovement : MonoBehaviour
 
     public GameObject hitParticles;
 
+
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -74,7 +81,12 @@ public class OpponentMovement : MonoBehaviour
     void Update()
     {
         if (currentHP <= 0)
+        {
+            audioManager.Play("Death");
+            youWin.SetActive(true);
             Destroy(gameObject);
+        }
+
 
         leftHP.text = currentHP.ToString();
 
@@ -254,6 +266,10 @@ public class OpponentMovement : MonoBehaviour
         gun.transform.position = new Vector3(playerCoords.x, 1.01f, playerCoords.y);
         PlayerPositionRayCheck();
 
+
+        audioManager.Play("CubeRoll");
+
+
         isMoving = false;
 
     }
@@ -267,6 +283,8 @@ public class OpponentMovement : MonoBehaviour
 
 
         GameObject projectileInstance = Instantiate(projectile, gunStartPos.transform.position, new Quaternion(0, 0, 0, 0));
+
+        audioManager.Play("BulletShoot");
 
         gunEndPos.transform.localPosition = new Vector3(0, 0, lastValue);
 
@@ -373,6 +391,7 @@ public class OpponentMovement : MonoBehaviour
         else if (other.gameObject.CompareTag("Bullet"))
         {
             Instantiate(hitParticles, transform.position, Quaternion.identity);
+            audioManager.Play("BulletHit");
             currentHP -= 1;
         }
 

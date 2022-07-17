@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Projectlile : MonoBehaviour
 {
+
+    public AudioManager audioManager;
+
     public AnimationCurve curve;
 
     public Vector3 startPos;
@@ -24,7 +27,10 @@ public class Projectlile : MonoBehaviour
     public GameObject bulletDestroyParticles;
 
 
-
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("AudioManager").GetComponent<AudioManager>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -54,7 +60,8 @@ public class Projectlile : MonoBehaviour
 
             if (elapsedTime > duration)
             {
-                Instantiate(bulletDestroyParticles, transform.position, new Quaternion(0,0,0,0));
+                audioManager.Play("Hit");
+                Instantiate(bulletDestroyParticles, transform.position, new Quaternion(0, 0, 0, 0));
                 Destroy(gameObject);
             }
         }
