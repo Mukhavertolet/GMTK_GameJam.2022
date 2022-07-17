@@ -6,6 +6,7 @@ using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     public TMP_Text numberOfStepsLeft;
+    public TMP_Text leftHP;
 
 
 
@@ -62,6 +63,8 @@ public class PlayerMovement : MonoBehaviour
 
         //number of steps text
         numberOfStepsLeft.text = stepsLeft.ToString();
+        leftHP.text = currentHP.ToString();
+
 
 
         if (isMoving)

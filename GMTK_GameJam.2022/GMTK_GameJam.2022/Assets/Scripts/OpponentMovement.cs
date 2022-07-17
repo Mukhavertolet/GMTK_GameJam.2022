@@ -1,9 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 
 public class OpponentMovement : MonoBehaviour
 {
+
+    public TMP_Text leftHP;
+
+
+
+
+
     public GameObject projectile;
 
 
@@ -46,6 +55,11 @@ public class OpponentMovement : MonoBehaviour
     public bool hasCompletedTurn = true;
 
 
+    private int prevMoveDir = 0;
+    [SerializeField]
+    private int desiredMoveDir = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +72,9 @@ public class OpponentMovement : MonoBehaviour
     {
         if (currentHP <= 0)
             Destroy(gameObject);
+
+        leftHP.text = currentHP.ToString();
+
 
         if (isMoving)
             return;
@@ -85,8 +102,22 @@ public class OpponentMovement : MonoBehaviour
         //    return;
         //}
 
+        PlayerPositionRayCheck();
 
-        int moveDir = Random.Range(1, 4);
+        int moveDir = Random.Range(1, 5);
+        while (moveDir == prevMoveDir)
+        {
+            if (moveDir == desiredMoveDir)
+                break;
+
+            int i = Random.Range(1, 5);
+            if (i == 1)
+                break;
+            moveDir = Random.Range(1, 5);
+        }
+
+
+        prevMoveDir = moveDir;
 
 
         switch (moveDir)
@@ -199,6 +230,7 @@ public class OpponentMovement : MonoBehaviour
         if (!hitWall)
             stepsLeft -= 1;
 
+
         hitWall = false;
 
 
@@ -214,6 +246,7 @@ public class OpponentMovement : MonoBehaviour
 
 
         gun.transform.position = new Vector3(playerCoords.x, 1.01f, playerCoords.y);
+        PlayerPositionRayCheck();
 
         isMoving = false;
 
@@ -260,6 +293,59 @@ public class OpponentMovement : MonoBehaviour
         {
             Debug.DrawRay(transform.position, Vector3.up * 100, Color.green);
         }
+    }
+
+    public void PlayerPositionRayCheck()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(transform.position, Vector3.forward, out hit, 15f, 7))
+        {
+            Debug.DrawRay(transform.position, Vector3.forward * 100, Color.red);
+
+            desiredMoveDir = 3;
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.forward * 100, Color.green);
+        }
+
+
+        if (Physics.Raycast(transform.position, Vector3.left, out hit, 15f, 7))
+        {
+            Debug.DrawRay(transform.position, Vector3.left * 100, Color.red);
+
+            desiredMoveDir = 2;
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.left * 100, Color.green);
+        }
+
+
+        if (Physics.Raycast(transform.position, Vector3.right, out hit, 15f, 7))
+        {
+            Debug.DrawRay(transform.position, Vector3.right * 100, Color.red);
+
+            desiredMoveDir = 1;
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.right * 100, Color.green);
+        }
+
+
+        if (Physics.Raycast(transform.position, Vector3.back, out hit, 15f, 7))
+        {
+            Debug.DrawRay(transform.position, Vector3.back * 100, Color.red);
+
+            desiredMoveDir = 4;
+        }
+        else
+        {
+            Debug.DrawRay(transform.position, Vector3.back * 100, Color.green);
+        }
+
     }
 
 
