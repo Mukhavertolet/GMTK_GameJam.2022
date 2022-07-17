@@ -10,6 +10,8 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+    public GameObject projectile;
+
 
     public int speed = 300;
 
@@ -21,6 +23,20 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField]
     private Vector2 playerCoords;
+
+    //private Vector2 previousPos;
+    //private Vector2 currentPos;
+
+    private int lastKeyPressed;
+
+    public GameObject gun;
+
+    public GameObject gunStartPos;
+    public GameObject gunEndPos;
+
+
+
+    private bool isShooting;
 
 
     //public ValueChecker valueChecker;
@@ -35,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        //currentPos = new Vector2(0, 6);
         //valueChecker.transform.position = new Vector3(playerCoords.x, 1.5f, playerCoords.y);
         //valueChecker.transform.position = new Vector3(playerCoords.x, 10f, playerCoords.y);
 
@@ -52,10 +68,12 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
             return;
 
-        if (stepsLeft < 1)
+        if (stepsLeft < 1 && !isShooting)
         {
+            StartCoroutine(Shoot());
             playersTurn = false;
         }
+
         if (!playersTurn)
         {
             if (!enemysTurn)
@@ -67,18 +85,30 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.D))
         {
+            gun.transform.eulerAngles = new Vector3(0, 90, 0);
+
+            lastKeyPressed = 1;
             StartCoroutine(RotateCube(Vector3.right));
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
+            gun.transform.eulerAngles = new Vector3(0, -90, 0);
+
+            lastKeyPressed = 2;
             StartCoroutine(RotateCube(Vector3.left));
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
+            gun.transform.eulerAngles = new Vector3(0, 0, 0);
+
+            lastKeyPressed = 3;
             StartCoroutine(RotateCube(Vector3.forward));
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
+            gun.transform.eulerAngles = new Vector3(0, 180, 0);
+
+            lastKeyPressed = 4;
             StartCoroutine(RotateCube(Vector3.back));
         }
 
@@ -166,7 +196,14 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForEndOfFrame();
 
 
-        //valueChecker.transform.position = new Vector3(playerCoords.x, 10, playerCoords.y);
+
+        //previousPos = currentPos;
+        //currentPos = playerCoords;
+
+        //Debug.Log("previous" + previousPos);
+        //Debug.Log("current" + currentPos);
+
+        gun.transform.position = new Vector3(playerCoords.x, 1.01f, playerCoords.y);
 
         isMoving = false;
 
@@ -182,6 +219,9 @@ public class PlayerMovement : MonoBehaviour
 
         playersTurn = true;
         enemysTurn = false;
+
+        isShooting = false;
+
 
         stepsLeft = lastValue;
 
@@ -224,7 +264,58 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public IEnumerator Shoot()
+    {
+        isShooting = true;
+        Debug.Log("PIU!!!");
 
+
+        Vector3 shootDirection;
+
+        //switch (lastKeyPressed)
+        //{
+        //    case 1:
+        //        {
+        //            shootDirection = Vector3.right;
+        //            break;
+        //        }
+        //    case 2:
+        //        {
+        //            shootDirection = Vector3.left;
+        //            break;
+        //        }
+        //    case 3:
+        //        {
+        //            shootDirection = Vector3.forward;
+        //            break;
+        //        }
+        //    case 4:
+        //        {
+        //            shootDirection = Vector3.back;
+        //            break;
+        //        }
+        //    default:
+        //        {
+        //            shootDirection = Vector3.down;
+        //            break;
+        //        }
+        //}
+
+        //Vector3 shootDirection = new Vector3(currentPos.x - previousPos.x, 0, currentPos.y - previousPos.y); //currentPos - previousPos;
+
+        //Debug.Log(shootDirection);
+
+        GameObject projectileInstance = Instantiate(projectile, gunStartPos.transform.position, new Quaternion(0, 0, 0, 0));
+
+        gunEndPos.transform.localPosition = new Vector3(0, 0, lastValue);
+
+        projectileInstance.GetComponent<Projectlile>().endPos = gunEndPos.transform.position;
+
+        projectileInstance.GetComponent<Projectlile>().allowMovement = true;
+
+
+        yield return null;
+    }
 
 
 
