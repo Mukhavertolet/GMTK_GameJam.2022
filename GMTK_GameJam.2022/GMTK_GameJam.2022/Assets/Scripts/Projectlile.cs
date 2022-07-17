@@ -17,6 +17,10 @@ public class Projectlile : MonoBehaviour
     public bool allowMovement = false;
 
 
+    public SphereCollider bulletCollider;
+
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,7 +43,15 @@ public class Projectlile : MonoBehaviour
 
             transform.position = pos;
 
+            if (elapsedTime > duration / 2)
+                bulletCollider.enabled = true;
+
+            if (elapsedTime > duration)
+                Destroy(gameObject);
+
         }
+
+
 
     }
 

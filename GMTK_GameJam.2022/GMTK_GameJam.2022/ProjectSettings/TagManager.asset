@@ -8,6 +8,7 @@ TagManager:
   - Wall
   - CubeFace
   - ValueChecker
+  - Bullet
   layers:
   - Default
   - TransparentFX

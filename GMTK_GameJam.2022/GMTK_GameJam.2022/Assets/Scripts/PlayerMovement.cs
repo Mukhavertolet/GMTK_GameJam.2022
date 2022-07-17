@@ -13,6 +13,12 @@ public class PlayerMovement : MonoBehaviour
     public GameObject projectile;
 
 
+    private int maxHP = 3;
+    public int currentHP;
+
+
+
+
     public int speed = 300;
 
     [SerializeField]
@@ -24,8 +30,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private Vector2 playerCoords;
 
-
-    private int lastKeyPressed;
 
     public GameObject gun;
 
@@ -47,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        currentHP = maxHP;
     }
 
     // Update is called once per frame
@@ -79,28 +83,24 @@ public class PlayerMovement : MonoBehaviour
         {
             gun.transform.eulerAngles = new Vector3(0, 90, 0);
 
-            lastKeyPressed = 1;
             StartCoroutine(RotateCube(Vector3.right));
         }
         else if (Input.GetKeyDown(KeyCode.A))
         {
             gun.transform.eulerAngles = new Vector3(0, -90, 0);
 
-            lastKeyPressed = 2;
             StartCoroutine(RotateCube(Vector3.left));
         }
         else if (Input.GetKeyDown(KeyCode.W))
         {
             gun.transform.eulerAngles = new Vector3(0, 0, 0);
 
-            lastKeyPressed = 3;
             StartCoroutine(RotateCube(Vector3.forward));
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
             gun.transform.eulerAngles = new Vector3(0, 180, 0);
 
-            lastKeyPressed = 4;
             StartCoroutine(RotateCube(Vector3.back));
         }
 
@@ -220,6 +220,10 @@ public class PlayerMovement : MonoBehaviour
         {
             //Debug.Log("BAM");
             hitWall = true;
+        }
+        else if (other.gameObject.CompareTag("Bullet"))
+        {
+            currentHP -= 1;
         }
 
 
