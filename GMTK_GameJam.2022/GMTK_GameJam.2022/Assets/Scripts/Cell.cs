@@ -9,6 +9,7 @@ public class Cell : MonoBehaviour
     public Vector2 coords;
     public string type;
 
+    public GameObject wall;
 
 
 
@@ -22,6 +23,17 @@ public class Cell : MonoBehaviour
     void Start()
     {
         coords = new Vector2(cell.transform.position.x, cell.transform.position.z);
+
+        if (coords == new Vector2(0, 6) || coords == new Vector2(6, 0))
+            return;
+
+        int wallChance = Random.Range(1, 7);
+        if(wallChance == 1)
+        {
+            Instantiate(wall, new Vector3(coords.x, 0.75f, coords.y), Quaternion.identity);
+        }
+
+
     }
 
 

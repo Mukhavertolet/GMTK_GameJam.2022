@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -48,6 +49,9 @@ public class PlayerMovement : MonoBehaviour
     public bool playersTurn = true;
     public bool enemysTurn = false;
 
+    private int loseValue = 0;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +62,17 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.R))
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        if (Input.GetKeyDown(KeyCode.Escape))
+            SceneManager.LoadScene(0);
+
+        //if(loseValue >= 4)
+        //{
+        //    Debug.Log("YOU LOST!!!!!!!!!!!!!");
+        //    SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        //}
+
         if (currentHP <= 0)
             Destroy(gameObject);
 
@@ -128,6 +143,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (hitWall)
             {
+                loseValue += 1;
                 break;
             }
             //Debug.Log("yes");

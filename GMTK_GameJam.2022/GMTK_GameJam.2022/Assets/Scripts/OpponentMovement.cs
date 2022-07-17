@@ -59,6 +59,7 @@ public class OpponentMovement : MonoBehaviour
     [SerializeField]
     private int desiredMoveDir = 0;
 
+    private bool didHitWall = false;
 
 
     // Start is called before the first frame update
@@ -110,8 +111,8 @@ public class OpponentMovement : MonoBehaviour
             if (moveDir == desiredMoveDir)
                 break;
 
-            int i = Random.Range(1, 5);
-            if (i == 1)
+            //int i = Random.Range(1, 5);
+            if (!didHitWall)
                 break;
             moveDir = Random.Range(1, 5);
         }
@@ -187,6 +188,7 @@ public class OpponentMovement : MonoBehaviour
             }
             //Debug.Log("yes");
 
+            didHitWall = false;
 
             float rotationAngle = Mathf.Min(Time.deltaTime * speed, remainingAngle);
             transform.RotateAround(rotationCenter, rotationAxis, rotationAngle);
@@ -198,6 +200,8 @@ public class OpponentMovement : MonoBehaviour
 
         if (hitWall)
         {
+            didHitWall = true;
+
             rotationAxis = Vector3.Cross(Vector3.up, -direction);
 
             while (remainingAngle < 90)
