@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
 
 
-
+    public OpponentMovement opponent;
     public GameObject projectile;
 
 
@@ -57,6 +57,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (currentHP <= 0)
+            Destroy(gameObject);
+
         //number of steps text
         numberOfStepsLeft.text = stepsLeft.ToString();
 
@@ -193,16 +196,22 @@ public class PlayerMovement : MonoBehaviour
     {
         enemysTurn = true;
 
+        opponent.hasCompletedTurn = false;
+
+
         Debug.Log("Enemy's turn!");
 
-        yield return new WaitForSeconds(2);
+        while (!opponent.hasCompletedTurn)
+            yield return new WaitForSeconds(1);
 
         playersTurn = true;
         enemysTurn = false;
 
         isShooting = false;
+        opponent.isShooting = false;
 
 
+        opponent.stepsLeft = opponent.lastValue;
         stepsLeft = lastValue;
 
         Debug.Log("Player's turn!");
@@ -252,9 +261,6 @@ public class PlayerMovement : MonoBehaviour
     {
         isShooting = true;
         Debug.Log("PIU!!!");
-
-
-        Vector3 shootDirection;
 
 
         GameObject projectileInstance = Instantiate(projectile, gunStartPos.transform.position, new Quaternion(0, 0, 0, 0));
