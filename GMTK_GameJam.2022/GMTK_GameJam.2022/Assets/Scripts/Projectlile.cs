@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Projectlile : MonoBehaviour
 {
+    public AnimationCurve curve;
+
     public Vector3 startPos;
     public Vector3 endPos;
 
@@ -28,9 +30,23 @@ public class Projectlile : MonoBehaviour
         if (allowMovement)
         {
             elapsedTime += Time.deltaTime;
+
             float percentageComplete = elapsedTime / duration;
 
-            transform.position = Vector3.Lerp(startPos, endPos, percentageComplete);
+            Vector3 pos = Vector3.Lerp(startPos, endPos, percentageComplete);
+
+            pos.y += curve.Evaluate(percentageComplete);
+
+            transform.position = pos;
+
+
+            //elapsedTime += Time.deltaTime;
+            //float percentageComplete = elapsedTime / duration;
+
+            //transform.position.Set(transform.position.x, transform.position.y + curve.Evaluate(percentageComplete), transform.position.z);
+
+
+            //transform.position = Vector3.Lerp(startPos, endPos, percentageComplete);
         }
 
 
