@@ -9,6 +9,7 @@ TagManager:
   - CubeFace
   - ValueChecker
   - Bullet
+  - PlayerLayerMask
   layers:
   - Default
   - TransparentFX

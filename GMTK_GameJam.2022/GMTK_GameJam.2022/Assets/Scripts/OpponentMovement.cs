@@ -359,7 +359,7 @@ public class OpponentMovement : MonoBehaviour
             //Debug.Log("Touch!");
             //Debug.Log(playerCoords);
         }
-        else if (other.gameObject.CompareTag("Wall"))
+        else if (other.gameObject.CompareTag("Wall") || other.gameObject.CompareTag("PlayerLayerMask"))
         {
             //Debug.Log("BAM");
             hitWall = true;
