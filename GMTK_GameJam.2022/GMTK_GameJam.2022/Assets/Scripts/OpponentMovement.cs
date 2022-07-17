@@ -62,6 +62,8 @@ public class OpponentMovement : MonoBehaviour
     private bool didHitWall = false;
 
 
+    public GameObject hitParticles;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -370,6 +372,7 @@ public class OpponentMovement : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Bullet"))
         {
+            Instantiate(hitParticles, transform.position, Quaternion.identity);
             currentHP -= 1;
         }
 

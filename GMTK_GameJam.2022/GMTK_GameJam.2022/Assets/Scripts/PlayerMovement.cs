@@ -52,6 +52,8 @@ public class PlayerMovement : MonoBehaviour
     private int loseValue = 0;
 
 
+    public GameObject hitParticles;
+
 
     // Start is called before the first frame update
     void Start()
@@ -251,6 +253,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (other.gameObject.CompareTag("Bullet"))
         {
+            Instantiate(hitParticles, transform.position, Quaternion.identity);
             currentHP -= 1;
         }
 

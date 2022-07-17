@@ -20,10 +20,16 @@ public class Projectlile : MonoBehaviour
     public SphereCollider bulletCollider;
 
 
+    public GameObject bulletSpawnParticles;
+    public GameObject bulletDestroyParticles;
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        Instantiate(bulletSpawnParticles, transform.position, Quaternion.identity);
         Debug.Log("HEY HEY!!");
         startPos = transform.position;
     }
@@ -47,8 +53,10 @@ public class Projectlile : MonoBehaviour
                 bulletCollider.enabled = true;
 
             if (elapsedTime > duration)
+            {
+                Instantiate(bulletDestroyParticles, transform.position, new Quaternion(0,0,0,0));
                 Destroy(gameObject);
-
+            }
         }
 
 

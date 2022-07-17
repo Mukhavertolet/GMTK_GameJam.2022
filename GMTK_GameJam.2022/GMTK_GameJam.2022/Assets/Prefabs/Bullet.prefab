@@ -156,3 +156,5 @@ MonoBehaviour:
   parabolaHeight: 0
   allowMovement: 0
   bulletCollider: {fileID: 8839145072251456694}
+  bulletSpawnParticles: {fileID: 7680745439914754787, guid: 38a83d393a1f43b42924e5b7ab33a376, type: 3}
+  bulletDestroyParticles: {fileID: 1549265400186259436, guid: 4e00e869ae7d20244b2d1db385d91603, type: 3}
