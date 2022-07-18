@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5953412541926555088}
   - component: {fileID: 8839145072251456694}
   - component: {fileID: 2387610114118179574}
+  - component: {fileID: -7198595723041066985}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Bullet
@@ -108,6 +109,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96259c012f758474fa07e8a6bbd86a2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
   curve:
     serializedVersion: 2
     m_Curve:
@@ -158,3 +160,19 @@ MonoBehaviour:
   bulletCollider: {fileID: 8839145072251456694}
   bulletSpawnParticles: {fileID: 7680745439914754787, guid: 38a83d393a1f43b42924e5b7ab33a376, type: 3}
   bulletDestroyParticles: {fileID: 1549265400186259436, guid: 4e00e869ae7d20244b2d1db385d91603, type: 3}
+--- !u!54 &-7198595723041066985
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4159728604075296281}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 3
